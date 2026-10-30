@@ -1,0 +1,57 @@
+/* Fidan Gallery Custom Stylesheet */
+
+body {
+    background-color: #0b0b0b;
+    color: #f4f1ea;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-serif {
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0b0b0b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #33291a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d4af37;
+}
+
+/* Visual Glow and Border Effects */
+.gold-glow {
+    text-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+}
+
+.gold-border {
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.gold-border:hover {
+    border-color: rgba(212, 175, 55, 0.8);
+}
+
+/* Glassmorphism Panel Effect */
+.glass-panel {
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+/* Cinematic Dark Hero Overlay Background */
+.cinematic-bg {
+    background: linear-gradient(180deg, rgba(11,11,11,0.6) 0%, rgba(11,11,11,0.95) 80%, #0b0b0b 100%),
+                radial-gradient(circle at 50% 20%, rgba(60, 45, 25, 0.4) 0%, transparent 60%);
+}
