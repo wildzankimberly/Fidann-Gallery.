@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fidan Gallery | Timeless Classical Art Masterpieces</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0b0b0b',
+                        'obsidian-light': '#141414',
+                        'obsidian-card': '#1a1a1a',
+                        cream: '#f4f1ea',
+                        'cream-muted': '#e8e2d5',
+                        gold: '#d4af37',
+                        'gold-light': '#e6ca65',
+                        'gold-dark': '#b59228',
+                        bronze: '#8c6d46',
+                    },
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- External CSS stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-obsidian text-cream antialiased selection:bg-gold selection:text-obsidian">
+
+    <!-- Header & Navigation -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-obsidian/90 backdrop-blur-md border-b border-gold/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full border border-gold flex items-center justify-center bg-gold/10 group-hover:bg-gold/20 transition-all duration-300">
+                    <i class="fa-solid fa-feather text-gold"></i>
+                </div>
+                <div>
+                    <span class="font-serif text-2xl md:text-3xl tracking-widest text-cream uppercase font-bold gold-glow">Fidan</span>
+                    <span class="block text-[10px] tracking-[0.3em] text-gold uppercase -mt-1 font-sans">Art Gallery</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm tracking-widest uppercase">
+                <a href="#hero" class="text-cream/80 hover:text-gold transition-colors duration-300">Home</a>
+                <a href="#collection" class="text-cream/80 hover:text-gold transition-colors duration-300">Collection</a>
+                <a href="#about" class="text-cream/80 hover:text-gold transition-colors duration-300">About</a>
+                <button id="favoritesNavBtn" onclick="toggleFavoritesView()" class="relative flex items-center gap-2 text-cream/80 hover:text-gold transition-colors duration-300">
+                    <i class="fa-solid fa-heart text-gold"></i> Favorites
+                    <span id="favBadge" class="absolute -top-2 -right-4 bg-gold text-obsidian text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                </button>
+            </nav>
+
+            <!-- Search Quick Trigger & Mobile Toggle -->
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center bg-obsidian-card border border-gold/20 rounded-full px-4 py-2 focus-within:border-gold transition-all">
+                    <i class="fa-solid fa-search text-gold/60 mr-2 text-sm"></i>
+                    <input type="text" id="headerSearch" placeholder="Search artwork or artist..." class="bg-transparent text-xs text-cream placeholder-cream/40 focus:outline-none w-36 lg:w-48">
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden text-cream hover:text-gold text-xl p-2 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden bg-obsidian border-b border-gold/20 px-6 py-6 space-y-4 shadow-2xl">
+            <a href="#hero" class="block text-sm tracking-widest uppercase text-cream/80 hover:text-gold">Home</a>
+            <a href="#collection" class="block text-sm tracking-widest uppercase text-cream/80 hover:text-gold">Collection</a>
+            <a href="#about" class="block text-sm tracking-widest uppercase text-cream/80 hover:text-gold">About</a>
+            <button onclick="toggleFavoritesView(); closeMobileMenu();" class="flex items-center gap-2 text-sm tracking-widest uppercase text-cream/80 hover:text-gold">
+                <i class="fa-solid fa-heart text-gold"></i> My Favorites (<span id="mobileFavCount">0</span>)
+            </button>
+            <div class="pt-2">
+                <input type="text" id="mobileSearch" placeholder="Search artwork or artist..." class="w-full bg-obsidian-card border border-gold/20 rounded-lg px-4 py-2.5 text-xs text-cream placeholder-cream/40 focus:outline-none focus:border-gold">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Cinematic Background & Overlay -->
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 cinematic-bg z-10"></div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg/1920px-Mona_Lisa,_by_Leonardo_da_Vinci,_from_C2RMF_retouched.jpg" alt="Hero Art Background" class="w-full h-full object-cover filter blur-sm scale-105 opacity-25 animate-pulse duration-[10000ms]">
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-20 max-w-5xl mx-auto px-6 text-center py-20">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gold/30 bg-gold/10 text-gold text-xs tracking-[0.25em] uppercase mb-6">
+                <i class="fa-solid fa-star text-[10px]"></i> International Digital Art Museum
+            </div>
+            <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl tracking-wider text-cream uppercase font-bold mb-6 gold-glow leading-tight">
+                Fidan Gallery
+            </h1>
+            <p class="font-serif italic text-2xl md:text-3xl text-gold-light mb-8 max-w-2xl mx-auto">
+                "Discover the Beauty of Timeless Art"
+            </p>
+            <p class="text-cream/70 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed mb-12">
+                Immerse yourself in centuries of human creativity. Explore pristine digital reproductions of world-renowned classical masterpieces, historic artifacts, and legendary visions curated from the world's most prestigious museums.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#collection" class="w-full sm:w-auto px-8 py-4 bg-gold hover:bg-gold-light text-obsidian font-semibold tracking-widest uppercase text-xs rounded transition-all duration-300 shadow-lg shadow-gold/20 flex items-center justify-center gap-3">
+                    <span>Explore Gallery</span>
+                    <i class="fa-solid fa-arrow-down-long"></i>
+                </a>
+                <a href="#about" class="w-full sm:w-auto px-8 py-4 bg-transparent hover:bg-gold/10 text-cream border border-gold/40 hover:border-gold font-semibold tracking-widest uppercase text-xs rounded transition-all duration-300 flex items-center justify-center gap-3">
+                    <span>Curator's Note</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Scroll down indicator -->
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 hidden md:flex flex-col items-center gap-2 opacity-70">
+            <span class="text-[10px] tracking-[0.3em] uppercase text-gold">Scroll</span>
+            <div class="w-5 h-9 rounded-full border border-gold/40 flex items-start justify-center p-1">
+                <div class="w-1.5 h-2 bg-gold rounded-full animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Collection Section -->
+    <section id="collection" class="py-24 px-6 max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <span class="text-gold text-xs tracking-[0.3em] uppercase block mb-3 font-semibold">The Permanent Collection</span>
+            <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl text-cream tracking-wide">Masterpieces of World Art</h2>
+            <div class="w-24 h-0.5 bg-gold mx-auto mt-6 opacity-60"></div>
+            <p id="collectionSubtitle" class="text-cream/60 text-sm max-w-xl mx-auto mt-4 font-light">
+                Browse through 20 curated historic masterworks spanning the Renaissance, Baroque, Impressionism, and Modern eras.
+            </p>
+        </div>
+
+        <!-- Controls: Filter Tabs & Advanced Search -->
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-6 mb-12 glass-panel p-6 rounded-2xl">
+            <!-- Category Filter Tabs -->
+            <div id="filterTabs" class="flex flex-wrap items-center justify-center lg:justify-start gap-2 w-full lg:w-auto">
+                <button onclick="filterCategory('all')" class="category-btn active px-4 py-2 rounded-full text-xs tracking-wider uppercase transition-all duration-300 bg-gold text-obsidian font-semibold">All Artworks</button>
+                <button onclick="filterCategory('renaissance')" class="category-btn px-4 py-2 rounded-full text-xs tracking-wider uppercase transition-all duration-300 bg-obsidian-card text-cream/80 hover:text-gold border border-gold/20">Renaissance</button>
+                <button onclick="filterCategory('baroque')" class="category-btn px-4 py-2 rounded-full text-xs tracking-wider uppercase transition-all duration-300 bg-obsidian-card text-cream/80 hover:text-gold border border-gold/20">Baroque</button>
+                <button onclick="filterCategory('impressionism')" class="category-btn px-4 py-2 rounded-full text-xs tracking-wider uppercase transition-all duration-300 bg-obsidian-card text-cream/80 hover:text-gold border border-gold/20">Impressionism</button>
+                <button onclick="filterCategory('modern')" class="category-btn px-4 py-2 rounded-full text-xs tracking-wider uppercase transition-all duration-300 bg-obsidian-card text-cream/80 hover:text-gold border border-gold/20">Modern</button>
+                <button onclick="filterCategory('19th-century')" class="category-btn px-4 py-2 rounded-full text-xs tracking-wider uppercase transition-all duration-300 bg-obsidian-card text-cream/80 hover:text-gold border border-gold/20">19th Century</button>
+            </div>
+
+            <!-- Search Bar & View Mode -->
+            <div class="flex items-center gap-4 w-full lg:w-auto justify-end">
+                <div class="relative w-full lg:w-64">
+                    <i class="fa-solid fa-search absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gold/60 text-xs"></i>
+                    <input type="text" id="gallerySearch" placeholder="Filter by title or artist..." class="w-full bg-obsidian border border-gold/20 rounded-full pl-10 pr-4 py-2.5 text-xs text-cream placeholder-cream/40 focus:outline-none focus:border-gold transition-all">
+                </div>
+                <button onclick="toggleFavoritesView()" id="favToggleTabBtn" class="px-4 py-2.5 rounded-full text-xs tracking-wider uppercase border border-gold/30 hover:bg-gold/10 transition-all flex items-center gap-2 whitespace-nowrap text-cream">
+                    <i class="fa-solid fa-heart text-gold"></i> <span id="favBtnLabel">Favorites</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Artworks Grid -->
+        <div id="artworksGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <!-- Dynamically populated via JavaScript -->
+        </div>
+
+        <!-- Empty State Notice -->
+        <div id="emptyState" class="hidden text-center py-24 glass-panel rounded-2xl max-w-xl mx-auto mt-8">
+            <i class="fa-solid fa-palette text-gold text-4xl mb-4 opacity-50"></i>
+            <h3 class="font-serif text-2xl text-cream mb-2">No Artworks Found</h3>
+            <p class="text-cream/60 text-xs mb-6">We couldn't find any masterpieces matching your search or filter criteria.</p>
+            <button onclick="resetFilters()" class="px-6 py-2.5 bg-gold text-obsidian text-xs tracking-widest uppercase font-semibold rounded">Reset Filters</button>
+        </div>
+    </section>
+
+    <!-- Artwork Detail Modal -->
+    <div id="artworkModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-obsidian/90 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-300">
+        <div id="modalContentBox" class="bg-obsidian-card border border-gold/30 w-full max-w-5xl max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl transform scale-95 transition-all duration-300 flex flex-col lg:flex-row relative">
+            <!-- Close Modal Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-obsidian/80 border border-gold/30 text-cream hover:text-gold flex items-center justify-center transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Modal Image Container -->
+            <div class="lg:w-1/2 bg-black flex items-center justify-center p-6 relative min-h-[350px] lg:min-h-[550px]">
+                <img id="modalImage" src="" alt="" class="max-h-[75vh] max-w-full object-contain shadow-2xl">
+                <div class="absolute bottom-4 left-4 bg-obsidian/80 backdrop-blur border border-gold/20 px-3 py-1 rounded text-[10px] text-gold uppercase tracking-widest" id="modalCategory">
+                    Category
+                </div>
+            </div>
+
+            <!-- Modal Details Info -->
+            <div class="lg:w-1/2 p-8 lg:p-12 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span id="modalYear" class="text-gold text-xs tracking-[0.2em] uppercase font-semibold">1503</span>
+                        <button id="modalFavBtn" onclick="toggleModalFavorite()" class="w-9 h-9 rounded-full border border-gold/30 flex items-center justify-center text-cream hover:text-gold hover:border-gold transition-all">
+                            <i class="fa-solid fa-heart"></i>
+                        </button>
+                    </div>
+                    <h2 id="modalTitle" class="font-serif text-3xl md:text-4xl text-cream font-bold mb-1">Mona Lisa</h2>
+                    <h4 id="modalArtist" class="text-gold/90 font-serif italic text-lg mb-6">Leonardo da Vinci</h4>
+                    
+                    <div class="grid grid-cols-2 gap-4 py-4 border-y border-gold/10 mb-6 text-xs">
+                        <div>
+                            <span class="block text-cream/40 uppercase tracking-widest text-[10px] mb-1">Medium</span>
+                            <span id="modalMedium" class="text-cream font-medium">Oil on poplar panel</span>
+                        </div>
+                        <div>
+                            <span class="block text-cream/40 uppercase tracking-widest text-[10px] mb-1">Dimensions</span>
+                            <span id="modalDimensions" class="text-cream font-medium">77 cm × 53 cm</span>
+                        </div>
+                        <div class="col-span-2">
+                            <span class="block text-cream/40 uppercase tracking-widest text-[10px] mb-1">Current Location</span>
+                            <span id="modalLocation" class="text-cream font-medium">Louvre Museum, Paris</span>
+                        </div>
+                    </div>
+
+                    <p id="modalDescription" class="text-cream/80 text-xs md:text-sm font-light leading-relaxed mb-8">
+                        Description goes here...
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-between pt-6 border-t border-gold/10">
+                    <span class="text-[10px] uppercase tracking-[0.2em] text-gold">Fidan Gallery Archive</span>
+                    <button onclick="closeModal()" class="px-6 py-2.5 bg-gold/10 hover:bg-gold text-gold hover:text-obsidian border border-gold/30 transition-all text-xs uppercase tracking-widest font-semibold rounded">
+                        Close View
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 bg-obsidian-light border-t border-gold/10">
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-gold text-xs tracking-[0.3em] uppercase block mb-3 font-semibold">About The Institution</span>
+                <h2 class="font-serif text-4xl md:text-5xl text-cream mb-6 leading-tight">Preserving Human Heritage in Digital Splendor</h2>
+                <p class="text-cream/70 text-sm leading-relaxed mb-6 font-light">
+                    Fidan Gallery was established with a singular vision: to transcend geographical boundaries and bring the world's most treasured classical masterpieces directly to art enthusiasts, scholars, and dreamers worldwide.
+                </p>
+                <p class="text-cream/70 text-sm leading-relaxed mb-8 font-light">
+                    Every painting in our permanent collection is curated with museum-grade accuracy, showcasing exquisite brushwork, historical context, and deep biographical insights from the Renaissance masters to the pioneers of modernism.
+                </p>
+                <div class="grid grid-cols-3 gap-6 pt-6 border-t border-gold/20">
+                    <div>
+                        <span class="block font-serif text-3xl md:text-4xl text-gold font-bold mb-1">20</span>
+                        <span class="text-[10px] uppercase tracking-widest text-cream/60">Masterpieces</span>
+                    </div>
+                    <div>
+                        <span class="block font-serif text-3xl md:text-4xl text-gold font-bold mb-1">6</span>
+                        <span class="text-[10px] uppercase tracking-widest text-cream/60">Art Eras</span>
+                    </div>
+                    <div>
+                        <span class="block font-serif text-3xl md:text-4xl text-gold font-bold mb-1">100%</span>
+                        <span class="text-[10px] uppercase tracking-widest text-cream/60">Curated Quality</span>
+                    </div>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="absolute -inset-2 bg-gradient-to-r from-gold/20 to-transparent rounded-2xl blur-lg"></div>
+                <div class="relative glass-panel p-8 rounded-2xl border border-gold/30">
+                    <h3 class="font-serif text-2xl text-cream mb-4">Curatorial Standards</h3>
+                    <ul class="space-y-4 text-xs md:text-sm text-cream/80 font-light">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-gold mt-1"></i>
+                            <span>High-resolution direct archives sourced from verified museum repositories.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-gold mt-1"></i>
+                            <span>Robust image fallback error handling guaranteeing zero broken visuals.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-gold mt-1"></i>
+                            <span>Personalized bookmarking and favorites stored securely in your browser session.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-gold mt-1"></i>
+                            <span>Immersive dark aesthetic tailored for optimal color fidelity and viewing pleasure.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-obsidian border-t border-gold/20 py-16 px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex items-center justify-center gap-3 mb-6">
+                <div class="w-8 h-8 rounded-full border border-gold flex items-center justify-center bg-gold/10">
+                    <i class="fa-solid fa-feather text-gold text-xs"></i>
+                </div>
+                <span class="font-serif text-2xl tracking-widest text-cream uppercase font-bold gold-glow">Fidan Gallery</span>
+            </div>
+            <p class="text-cream/50 text-xs max-w-md mx-auto mb-8 font-light">
+                An international digital art gallery celebrating classical masterpieces, historic artistry, and timeless human expression.
+            </p>
+            <div class="flex items-center justify-center gap-6 mb-8 text-sm">
+                <a href="#hero" class="text-cream/70 hover:text-gold transition-colors">Home</a>
+                <a href="#collection" class="text-cream/70 hover:text-gold transition-colors">Collection</a>
+                <a href="#about" class="text-cream/70 hover:text-gold transition-colors">About</a>
+                <a href="#" onclick="toggleFavoritesView(); return false;" class="text-cream/70 hover:text-gold transition-colors">Favorites</a>
+            </div>
+            <div class="w-16 h-0.5 bg-gold/40 mx-auto mb-8"></div>
+            <p class="text-cream/40 text-[10px] tracking-widest uppercase">
+                &copy; 2026 Fidan Gallery. All Rights Reserved. Crafted for Art Connoisseurs.
+            </p>
+        </div>
+    </footer>
+
+    <!-- External JavaScript File -->
+    <script src="script.js"></script>
+</body>
+</html>
